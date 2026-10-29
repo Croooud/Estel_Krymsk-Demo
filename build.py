@@ -152,8 +152,10 @@ def main():
         jsonld=jsonld(c), js=js,
     )
 
-    def render(inline, css):
-        img = {k: {**v, "src": v["inline"] if inline else v["path"], "srcset": "" if inline else v["srcset"]}
+    def render(inline, css, prefix=""):
+        def pre(srcset):
+            return ", ".join(prefix + part.strip() for part in srcset.split(",")) if srcset else ""
+        img = {k: {**v, "src": v["inline"] if inline else prefix + v["path"], "srcset": "" if inline else pre(v["srcset"])}
                for k, v in imgs.items()}
         gallery_imgs = [img[k] for k in sorted((k for k in img if k.startswith("gallery-")), key=lambda k: int(k.split("-")[1]))]
         return tpl.render(**ctx, img=img, gallery_imgs=gallery_imgs, inline_images=inline, css=css)
@@ -162,6 +164,9 @@ def main():
     (DIST / "site").mkdir(parents=True, exist_ok=True)
     (DIST / "index.html").write_text(render(True, css), encoding="utf-8")
     (DIST / "site" / "index.html").write_text(render(False, css), encoding="utf-8")
+    # корень репозитория — для GitHub Pages: страница открывается по ссылке репозитория, фото берутся из dist/site/assets
+    (ROOT / "index.html").write_text(render(False, css, prefix="dist/site/"), encoding="utf-8")
+    (ROOT / ".nojekyll").write_text("", encoding="utf-8")
     print("dist/index.html", (DIST / "index.html").stat().st_size // 1024, "KB")
     print("dist/site/index.html", (DIST / "site" / "index.html").stat().st_size // 1024, "KB")
     for k, v in imgs.items():
