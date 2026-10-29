@@ -1,0 +1,6 @@
+src/originals/*.png
+src/originals/*.jpeg
+src/originals/*.jpg
+__pycache__/
+node_modules/
+.DS_Store

@@ -1,0 +1,503 @@
+{
+  "_readme": "Единый источник содержания сайта. Меняйте тексты, контакты, цены и флаги здесь, затем запускайте: python3 build.py. Статусы: source — со скриншотов/прайсов салона; client — со слов заказчика; decoded_qr — расшифровано из QR-кода, адрес назначения не открывался; pending — ждёт подтверждения владелицы.",
+  "demo": {
+    "enabled": true,
+    "noindex": true,
+    "_note": "Перед публичным запуском: enabled=false и noindex=false — осознанно, после согласования всех данных."
+  },
+  "salon": {
+    "fullName": {
+      "value": "ESTEL Счастливые люди Яны Белинской",
+      "status": "source",
+      "source": "IMG_5143–5148: карточка в Яндекс Картах («Estel Счастливые люди Яны Белинской»)"
+    },
+    "brand": {
+      "primary": "Счастливые люди",
+      "secondary": "салон Яны Белинской",
+      "mark": "ESTEL"
+    },
+    "owner": {
+      "value": "Яна Белинская",
+      "status": "client"
+    },
+    "isNew": {
+      "value": true,
+      "status": "client",
+      "_note": "Дата открытия неизвестна и на сайте не указывается."
+    },
+    "city": "Крымск",
+    "address": {
+      "region": "Краснодарский край",
+      "locality": "Крымск",
+      "street": "Коммунистическая улица, 48",
+      "postalCode": "353380",
+      "short": "Коммунистическая, 48",
+      "full": "Краснодарский край, Крымск, Коммунистическая улица, 48, 353380",
+      "status": "source",
+      "source": "IMG_5148"
+    },
+    "phone": {
+      "display": "+7 (989) 760-54-60",
+      "e164": "+79897605460",
+      "status": "source",
+      "source": "IMG_5148",
+      "_note": "В карточке есть «Ещё 1» номер — он не раскрыт и на сайте не используется."
+    },
+    "hours": {
+      "display": "Ежедневно 09:00–19:00",
+      "schema": {
+        "days": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "09:00",
+        "closes": "19:00"
+      },
+      "note": "В нерабочие и праздничные дни режим может меняться — уточняйте по телефону.",
+      "status": "source",
+      "source": "IMG_5148"
+    }
+  },
+  "links": {
+    "map": {
+      "url": null,
+      "searchQuery": "Краснодарский край, Крымск, Коммунистическая улица, 48",
+      "status": "pending",
+      "_note": "Точной ссылки на карточку нет — сайт формирует ссылку поиска адреса в Яндекс Картах. Координаты не назначаются."
+    },
+    "reviewQr": {
+      "url": "https://ya.cc/t/F1f-ugu8AUjsNS",
+      "status": "decoded_qr",
+      "source": "IMG_5153: три одинаковых QR-кода на листовке «Оставьте отзыв», все три расшифрованы в один и тот же адрес",
+      "showOnSite": true,
+      "label": "Оставить отзыв на Яндекс Картах",
+      "_note": "Короткая ссылка Яндекса. Из рабочей среды открыть её не удалось — проверить с телефона перед запуском."
+    },
+    "privateChannel": {
+      "url": null,
+      "title": "ESTEL ЯНА БЕЛИНСКАЯ (приватный канал)",
+      "status": "decoded_qr",
+      "source": "IMG_5154",
+      "showOnSite": false,
+      "_note": "Ссылка-приглашение расшифрована из QR (IMG_5154) и хранится у разработчика. В публичный репозиторий не выкладывается; на сайт — только с согласия владелицы."
+    },
+    "social": []
+  },
+  "booking": {
+    "mode": "phone",
+    "url": null,
+    "label": "Записаться онлайн",
+    "status": "pending",
+    "_note": "Когда появится подтверждённая ссылка сервиса записи — укажите url. Основные кнопки станут «Записаться онлайн», звонок останется дополнительным."
+  },
+  "motion": {
+    "gsap": true,
+    "smoothScroll": false,
+    "_note": "smoothScroll=true подключит Lenis (стандарт студии). По брифу салона по умолчанию выключен: без перехвата прокрутки."
+  },
+  "meta": {
+    "title": "Счастливые люди Яны Белинской — салон красоты в Крымске",
+    "description": "Салон «Счастливые люди» Яны Белинской в Крымске: Коммунистическая улица, 48. Ежедневно 09:00–19:00. Для записи позвоните: +7 (989) 760-54-60.",
+    "lang": "ru"
+  },
+  "texts": {
+    "hero": {
+      "eyebrow": "Салон Яны Белинской · Крымск",
+      "subtitle": "Пространство красоты и заботы о себе",
+      "text": "Стрижки, окрашивание и уход за волосами в салоне на Коммунистической, 48. Для записи свяжитесь с нами по телефону."
+    },
+    "about": {
+      "text": "Светлый каменный пол, графитовые детали и большая зелёная стена с подсветкой. Над залом — геометрические линии света, у зеркал — рабочие места и полки с косметикой ESTEL.",
+      "details": [
+        "Светлый камень и графит",
+        "Зелёная стена с мягкой подсветкой",
+        "Линии света на потолке"
+      ],
+      "status": "pending",
+      "_note": "Описание составлено по фотографиям; согласовать формулировки с владелицей."
+    }
+  },
+  "images": {
+    "hero": {
+      "source": "IMG_5143.png",
+      "crop": [
+        17,
+        360,
+        1162,
+        1700
+      ],
+      "width": 1145,
+      "alt": "Зал салона: металлический стеллаж с косметикой, большая зелёная стена с подсветкой, чёрный диван и линии света на потолке",
+      "caption": "Зал салона",
+      "status": "source",
+      "_note": "Кадр вырезан из скриншота Яндекс Карт. Нужен оригинал в полном разрешении."
+    },
+    "mirror": {
+      "source": "IMG_5144.png",
+      "crop": [
+        0,
+        412,
+        1179,
+        1700
+      ],
+      "width": 1000,
+      "alt": "Рабочее место: большое зеркало у светлой фактурной стены и вертикальные полки с косметикой",
+      "caption": "Рабочее место у зеркала",
+      "status": "source"
+    },
+    "ceiling": {
+      "source": "IMG_5143.png",
+      "crop": [
+        17,
+        370,
+        1162,
+        780
+      ],
+      "width": 1145,
+      "alt": "Потолок салона с геометрическими линиями света",
+      "caption": "Линии света на потолке",
+      "status": "source"
+    },
+    "shelf": {
+      "source": "IMG_5145.png",
+      "crop": [
+        0,
+        412,
+        995,
+        1980
+      ],
+      "width": 900,
+      "alt": "Металлический стеллаж с косметикой ESTEL для волос",
+      "caption": "Стеллаж с косметикой ESTEL",
+      "status": "source"
+    },
+    "_unused": {
+      "IMG_5146.png": "Кадр продукции размыт, на ценниках читаются цены средств — на сайт не взят.",
+      "IMG_5147.png": "Источник отзыва (оформлен текстом).",
+      "IMG_5148.png": "Источник адреса, телефона и часов (оформлены текстом).",
+      "IMG_5153.png": "QR-код отзыва — расшифрован, см. links.reviewQr.",
+      "IMG_5154.png": "QR-код приватного канала — расшифрован, не публикуется."
+    }
+  },
+  "review": {
+    "author": "Анжела Артуровна",
+    "date": "17 октября",
+    "rating": 5,
+    "quote": "это место, куда хочется возвращаться снова и снова!",
+    "label": "Фрагмент отзыва на Яндекс Картах",
+    "status": "source",
+    "source": "IMG_5147",
+    "_note": "Год отзыва по скриншоту не установлен. Оценка относится только к этому отзыву, не к организации."
+  },
+  "prices": {
+    "status": "source",
+    "sources": {
+      "master": "8c485425-2868-42e9-b061-306fce69de10.jpeg — «Прайс — Мастер»",
+      "top": "835d0e5f-c311-4b3c-92ce-4eafe9c15d16.jpeg — «Прайс — Топ мастер»"
+    },
+    "validFrom": null,
+    "_note": "Дата действия прайсов не указана — подтвердить у владелицы. Отсутствующая цена = null, не 0.",
+    "categories": [
+      {
+        "id": "master",
+        "label": "Мастер"
+      },
+      {
+        "id": "top",
+        "label": "Топ-мастер"
+      }
+    ],
+    "groups": [
+      {
+        "id": "cuts",
+        "label": "Стрижки и укладки"
+      },
+      {
+        "id": "color",
+        "label": "Окрашивание"
+      },
+      {
+        "id": "care",
+        "label": "Уход, завивка и объём"
+      },
+      {
+        "id": "makeup",
+        "label": "Макияж и брови"
+      }
+    ],
+    "footnote": "Итоговую стоимость уточняйте при записи.",
+    "services": [
+      {
+        "id": "cut-women",
+        "group": "cuts",
+        "publicName": "Женская стрижка",
+        "note": null,
+        "offers": [
+          {
+            "category": "master",
+            "sourceSection": "Стрижки",
+            "sourceName": "Женские",
+            "min": 800,
+            "max": 1500
+          },
+          {
+            "category": "top",
+            "sourceSection": "Стрижки",
+            "sourceName": "Женские",
+            "min": 1500,
+            "max": 2000
+          }
+        ]
+      },
+      {
+        "id": "cut-men",
+        "group": "cuts",
+        "publicName": "Мужская стрижка",
+        "note": null,
+        "offers": [
+          {
+            "category": "master",
+            "sourceSection": "Стрижки",
+            "sourceName": "Мужские",
+            "min": 500,
+            "max": 800
+          },
+          {
+            "category": "top",
+            "sourceSection": "Стрижки",
+            "sourceName": "Мужские",
+            "min": 800,
+            "max": 1000
+          }
+        ]
+      },
+      {
+        "id": "styling",
+        "group": "cuts",
+        "publicName": "Укладка",
+        "note": null,
+        "offers": [
+          {
+            "category": "master",
+            "sourceSection": null,
+            "sourceName": "Укладки",
+            "min": 700,
+            "max": 1000
+          },
+          {
+            "category": "top",
+            "sourceSection": null,
+            "sourceName": "Укладки",
+            "min": 1000,
+            "max": 1500
+          }
+        ]
+      },
+      {
+        "id": "updo",
+        "group": "cuts",
+        "publicName": "Причёска",
+        "note": null,
+        "offers": [
+          {
+            "category": "master",
+            "sourceSection": null,
+            "sourceName": "Причёска",
+            "min": 1000,
+            "max": 1500
+          },
+          {
+            "category": "top",
+            "sourceSection": null,
+            "sourceName": "Причёска",
+            "min": 1500,
+            "max": 2500
+          }
+        ]
+      },
+      {
+        "id": "coloring",
+        "group": "color",
+        "publicName": "Окрашивание",
+        "note": null,
+        "offers": [
+          {
+            "category": "master",
+            "sourceSection": null,
+            "sourceName": "Окрашивание",
+            "min": 1500,
+            "max": 4000
+          },
+          {
+            "category": "top",
+            "sourceSection": null,
+            "sourceName": "Окрашивание",
+            "min": 1500,
+            "max": 5000
+          }
+        ]
+      },
+      {
+        "id": "creative",
+        "group": "color",
+        "publicName": "Творческие техники",
+        "note": "Мелирование, шатуш, аэртач",
+        "offers": [
+          {
+            "category": "master",
+            "sourceSection": null,
+            "sourceName": "Творческие техники: мелирование, шатуш, аэртач",
+            "min": 3000,
+            "max": 7000
+          },
+          {
+            "category": "top",
+            "sourceSection": null,
+            "sourceName": "Творческие техники: мелирование, шатуш, аэртач",
+            "min": 4000,
+            "max": 15000
+          }
+        ]
+      },
+      {
+        "id": "boost-up",
+        "group": "care",
+        "publicName": "Буст-ап",
+        "note": "Долговременный прикорневой объём",
+        "offers": [
+          {
+            "category": "master",
+            "sourceSection": "Уход, химия, объём",
+            "sourceName": "Буст-ап — долговременный прикорневой объём",
+            "min": 2500,
+            "max": 2500
+          },
+          {
+            "category": "top",
+            "sourceSection": "Уход, химия, объём",
+            "sourceName": "Буст-ап — долговременный прикорневой объём",
+            "min": 3000,
+            "max": 3000
+          }
+        ]
+      },
+      {
+        "id": "perm-women",
+        "group": "care",
+        "publicName": "Химическая завивка · женская",
+        "note": null,
+        "offers": [
+          {
+            "category": "master",
+            "sourceSection": "Уход, химия, объём",
+            "sourceName": "Женская химия",
+            "min": 2500,
+            "max": 4000
+          },
+          {
+            "category": "top",
+            "sourceSection": "Уход, химия, объём",
+            "sourceName": "Женская химия",
+            "min": 4000,
+            "max": 6000
+          }
+        ]
+      },
+      {
+        "id": "perm-men",
+        "group": "care",
+        "publicName": "Химическая завивка · мужская",
+        "note": null,
+        "offers": [
+          {
+            "category": "master",
+            "sourceSection": "Уход, химия, объём",
+            "sourceName": "Мужская химия",
+            "min": 2500,
+            "max": 2500
+          },
+          {
+            "category": "top",
+            "sourceSection": "Уход, химия, объём",
+            "sourceName": "Мужская химия",
+            "min": 3000,
+            "max": 3000
+          }
+        ]
+      },
+      {
+        "id": "spa",
+        "group": "care",
+        "publicName": "SPA-процедура",
+        "note": null,
+        "offers": [
+          {
+            "category": "master",
+            "sourceSection": "Уход, химия, объём",
+            "sourceName": "SPA-процедура",
+            "min": 1000,
+            "max": 1000
+          },
+          {
+            "category": "top",
+            "sourceSection": "Уход, химия, объём",
+            "sourceName": "SPA-процедура",
+            "min": 1500,
+            "max": 1500
+          }
+        ]
+      },
+      {
+        "id": "makeup",
+        "group": "makeup",
+        "publicName": "Макияж",
+        "note": null,
+        "offers": [
+          {
+            "category": "master",
+            "sourceSection": null,
+            "sourceName": null,
+            "min": null,
+            "max": null,
+            "status": "not_listed"
+          },
+          {
+            "category": "top",
+            "sourceSection": null,
+            "sourceName": "Макияж",
+            "min": 1500,
+            "max": 1500
+          }
+        ]
+      },
+      {
+        "id": "brows",
+        "group": "makeup",
+        "publicName": "Брови",
+        "note": null,
+        "offers": [
+          {
+            "category": "master",
+            "sourceSection": null,
+            "sourceName": null,
+            "min": null,
+            "max": null,
+            "status": "not_listed"
+          },
+          {
+            "category": "top",
+            "sourceSection": null,
+            "sourceName": "Брови",
+            "min": 700,
+            "max": 700
+          }
+        ]
+      }
+    ]
+  }
+}

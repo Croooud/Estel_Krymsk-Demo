@@ -1,0 +1,350 @@
+{#- Шаблон страницы. Данные — content.json, сборка — build.py. Руками index.html не правим. -#}
+{%- set C = "mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-16" -%}
+{%- set BTN = "inline-flex min-h-12 items-center justify-center gap-2.5 rounded-full bg-moss px-6 py-3 text-center text-[15px] font-semibold tracking-[0.01em] text-white transition-[background-color,transform,box-shadow] duration-300 ease-out hover:-translate-y-0.5 hover:bg-moss-2 hover:shadow-[0_12px_28px_-14px_rgba(41,74,59,0.6)] active:translate-y-0 motion-reduce:hover:translate-y-0" -%}
+{%- set BTN2 = "inline-flex min-h-12 items-center justify-center gap-2.5 rounded-full border border-ink/25 px-6 py-3 text-center text-[15px] font-semibold tracking-[0.01em] text-ink transition-[border-color,background-color,transform] duration-300 ease-out hover:-translate-y-0.5 hover:border-ink hover:bg-surface active:translate-y-0 motion-reduce:hover:translate-y-0" -%}
+{%- set LABEL = "text-[13px] font-semibold uppercase tracking-[0.16em] text-ink-2" -%}
+{%- macro icon(name, cls="size-[18px]") -%}
+<svg class="{{ cls }} shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+{%- if name == "phone" -%}<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>
+{%- elif name == "arrow" -%}<path d="M5 12h14M13 6l6 6-6 6"/>
+{%- elif name == "out" -%}<path d="M7 17 17 7M8 7h9v9"/>
+{%- elif name == "pin" -%}<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
+{%- elif name == "clock" -%}<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+{%- elif name == "menu" -%}<path d="M4 8h16M4 16h16"/>
+{%- elif name == "close" -%}<path d="M6 6l12 12M18 6 6 18"/>
+{%- elif name == "expand" -%}<path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+{%- endif -%}</svg>
+{%- endmacro -%}
+{%- macro primary_cta(extra="") -%}
+<a href="{{ cta.href }}" class="{{ BTN }} {{ extra }}"{% if cta.external %} target="_blank" rel="noopener"{% endif %} data-cta>{{ icon(cta.icon) }}<span>{{ cta.label }}</span></a>
+{%- endmacro -%}
+<!doctype html>
+<html lang="{{ meta.lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ meta.title }}</title>
+<meta name="description" content="{{ meta.description }}">
+{%- if demo.noindex %}
+<meta name="robots" content="noindex, nofollow">{# DEMO: убрать перед публичным запуском (content.json → demo.noindex=false) #}
+{%- endif %}
+<meta name="theme-color" content="#F4F3EF">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="{{ meta.title }}">
+<meta property="og:description" content="{{ meta.description }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@400;500;600&display=swap">
+{%- if not inline_images %}
+<link rel="preload" as="image" href="{{ img.hero.src }}"{% if img.hero.srcset %} imagesrcset="{{ img.hero.srcset }}" imagesizes="(min-width: 1024px) 55vw, 100vw"{% endif %} fetchpriority="high">
+{%- endif %}
+<script>document.documentElement.classList.add('js')</script>
+<style>{{ css|safe }}</style>
+<script type="application/ld+json">{{ jsonld|safe }}</script>
+</head>
+<body class="bg-paper font-sans text-[16px] leading-[1.6] text-ink antialiased pb-[calc(80px+env(safe-area-inset-bottom))] md:pb-0">
+<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-ink focus:px-5 focus:py-3 focus:text-paper">Перейти к содержанию</a>
+
+{%- if demo.enabled %}
+<div class="border-b border-line bg-sage">
+  <p class="{{ C }} py-2.5 text-[13px] leading-snug text-ink">Демонстрационная версия для согласования с владелицей. Страница закрыта от поисковых систем.</p>
+</div>
+{%- endif %}
+
+<header class="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur-md supports-[not(backdrop-filter:blur(1px))]:bg-paper" data-header>
+  <div class="{{ C }} flex h-[72px] items-center justify-between gap-3 sm:gap-6">
+    <a href="#top" class="group flex min-w-0 flex-col leading-none" aria-label="{{ salon.fullName.value }} — в начало страницы">
+      <span class="font-serif text-[24px] font-semibold tracking-[-0.01em] lg:text-[26px]">{{ salon.brand.primary }}</span>
+      <span class="mt-1.5 whitespace-nowrap text-[13px] font-medium uppercase tracking-[0.04em] text-ink-2 min-[400px]:tracking-[0.14em]">{{ salon.brand.secondary }} <span aria-hidden="true">·</span> {{ salon.brand.mark }}</span>
+    </a>
+    <nav class="hidden lg:block" aria-label="Основная навигация">
+      <ul class="flex items-center gap-7 text-[15px] font-medium">
+        {%- for item in nav %}
+        <li><a class="link-u py-2" href="#{{ item.id }}">{{ item.label }}</a></li>
+        {%- endfor %}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-2">
+      <span class="hidden md:block"><a href="{{ tel }}" class="{{ BTN }} min-h-11 px-5 text-[14px]">{{ icon("phone", "size-4") }}<span>Связаться для записи</span></a></span>
+      <button type="button" class="-mr-2 inline-flex size-11 items-center justify-center rounded-full transition-colors hover:bg-sage lg:hidden" aria-expanded="false" aria-controls="mobile-menu" data-menu-btn>
+        <span class="sr-only" data-menu-label>Открыть меню</span>
+        <span data-menu-icon-open>{{ icon("menu", "size-6") }}</span>
+        <span class="hidden" data-menu-icon-close>{{ icon("close", "size-6") }}</span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="absolute inset-x-0 top-full hidden border-b border-line bg-paper shadow-[0_24px_40px_-30px_rgba(36,40,36,0.45)] lg:hidden" data-menu>
+    <nav class="{{ C }} pb-7 pt-2" aria-label="Меню">
+      <ul>
+        {%- for item in nav %}
+        <li class="border-b border-line"><a class="flex min-h-14 items-center justify-between font-serif text-[24px] font-medium" href="#{{ item.id }}" data-menu-link>{{ item.label }}{{ icon("arrow", "size-5 text-ink-2") }}</a></li>
+        {%- endfor %}
+      </ul>
+      <a href="{{ tel }}" class="{{ BTN }} mt-6 w-full">{{ icon("phone") }}<span>Связаться для записи</span></a>
+      <p class="mt-4 text-center text-[15px] leading-relaxed text-ink-2">{{ salon.phone.display }}<br>{{ salon.hours.display }}</p>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  {#- ── Б. Первый экран ─────────────────────────────── #}
+  <section id="top" class="scroll-mt-[88px]" aria-labelledby="hero-title">
+    <div class="{{ C }} grid items-center gap-8 pb-16 pt-5 sm:gap-10 sm:pt-8 lg:grid-cols-[0.82fr_1fr] lg:gap-16 lg:pb-24 lg:pt-16">
+      <div>
+        <p class="{{ LABEL }}">{{ hero.eyebrow }}</p>
+        <h1 id="hero-title" class="mt-5 font-serif text-[clamp(3.6rem,17vw,5rem)] font-medium leading-[0.9] tracking-[-0.025em] lg:text-[clamp(5rem,7.4vw,6.4rem)]">Счастливые<br>люди</h1>
+        <p class="mt-6 max-w-[22ch] font-serif text-[27px] italic leading-[1.15] text-moss lg:text-[32px]">{{ hero.subtitle }}</p>
+        <p class="mt-6 max-w-[38ch] text-[17px] leading-[1.65] text-ink-2">{{ hero.text }}</p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          {{ primary_cta() }}
+          <a href="#prices" class="{{ BTN2 }}"><span>Услуги и цены</span>{{ icon("arrow") }}</a>
+        </div>
+        <p class="mt-8 flex items-center gap-3 border-t border-line pt-5 text-[15px] text-ink-2">{{ icon("clock", "size-[18px] text-moss") }}<span>{{ salon.hours.display }}</span></p>
+      </div>
+      <figure class="relative order-first lg:order-none">
+        <div class="overflow-hidden rounded-[20px] bg-sage">
+          <img src="{{ img.hero.src }}"{% if img.hero.srcset %} srcset="{{ img.hero.srcset }}" sizes="(min-width: 1024px) 55vw, 100vw"{% endif %} width="{{ img.hero.w }}" height="{{ img.hero.h }}" alt="{{ img.hero.alt }}" fetchpriority="high" decoding="async" class="aspect-[4/3] w-full object-cover object-[62%_42%] md:aspect-[16/10] lg:aspect-auto lg:h-[min(78vh,740px)]">
+        </div>
+        <figcaption class="absolute bottom-4 left-4 rounded-full bg-paper/90 px-3.5 py-1.5 text-[13px] font-medium text-ink backdrop-blur-sm">{{ img.hero.caption }} · {{ salon.address.short }}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  {#- ── В. Пространство салона ──────────────────────── #}
+  <section id="about" class="scroll-mt-[88px] border-t border-line py-20 lg:py-32" aria-labelledby="about-title">
+    <div class="{{ C }} grid gap-12 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-5 lg:pr-6" data-reveal>
+        <p class="{{ LABEL }}">01 — О салоне</p>
+        <h2 id="about-title" class="mt-5 font-serif text-[clamp(2.4rem,9vw,3.5rem)] font-medium leading-[1.02] tracking-[-0.015em]">Место, где приятно уделить время себе</h2>
+        <p class="mt-7 max-w-[44ch] text-[17px] leading-[1.7] text-ink-2">{{ about.text }}</p>
+        <dl class="mt-10 border-t border-line">
+          {%- for d in about.details %}
+          <div class="flex items-baseline gap-5 border-b border-line py-4">
+            <dt class="w-7 shrink-0 font-serif text-[18px] text-moss tnum">{{ "%02d"|format(loop.index) }}</dt>
+            <dd class="text-[16px] font-medium">{{ d }}</dd>
+          </div>
+          {%- endfor %}
+        </dl>
+      </div>
+      <div class="grid grid-cols-12 items-start lg:col-span-7">
+        <button type="button" class="group col-span-12 overflow-hidden rounded-[20px] bg-sage text-left sm:col-span-10 sm:col-start-3 lg:col-span-10 lg:col-start-3" data-lightbox aria-label="Открыть фото крупнее: {{ img.mirror.caption }}" data-reveal>
+          <img src="{{ img.mirror.src }}" width="{{ img.mirror.w }}" height="{{ img.mirror.h }}" alt="{{ img.mirror.alt }}" data-caption="{{ img.mirror.caption }}" loading="lazy" decoding="async" class="aspect-[5/6] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        </button>
+        <figure class="relative col-span-11 col-start-2 -mt-14 sm:col-span-8 sm:col-start-1 lg:col-span-8 lg:col-start-1 lg:-mt-28" data-reveal>
+          <button type="button" class="group block w-full overflow-hidden rounded-[16px] bg-sage ring-8 ring-paper" data-lightbox aria-label="Открыть фото крупнее: {{ img.ceiling.caption }}">
+            <img src="{{ img.ceiling.src }}" width="{{ img.ceiling.w }}" height="{{ img.ceiling.h }}" alt="{{ img.ceiling.alt }}" data-caption="{{ img.ceiling.caption }}" loading="lazy" decoding="async" class="aspect-[1145/410] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          </button>
+          <figcaption class="mt-3 pl-2 text-[14px] text-ink-2">{{ img.ceiling.caption }}</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  {#- ── Г. Услуги и цены ────────────────────────────── #}
+  <section id="prices" class="scroll-mt-[88px] bg-sage py-20 lg:py-28" aria-labelledby="prices-title">
+    <div class="{{ C }}">
+      <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between" data-reveal>
+        <div>
+          <p class="{{ LABEL }}">02 — Прайс</p>
+          <h2 id="prices-title" class="mt-5 font-serif text-[clamp(2.4rem,9vw,3.5rem)] font-medium leading-[1.02] tracking-[-0.015em]">Услуги и цены</h2>
+          <p class="mt-4 text-[17px] text-ink-2" id="prices-hint">Выберите категорию специалиста</p>
+        </div>
+        <div class="hidden w-full rounded-full border border-line bg-paper p-1 sm:w-auto [.js_&]:flex" role="tablist" aria-label="Категория специалиста" aria-describedby="prices-hint" data-tabs>
+          {%- for t in tabs %}
+          <button type="button" role="tab" id="tab-{{ t.id }}" aria-controls="panel-{{ t.id }}" aria-selected="{{ 'true' if loop.first else 'false' }}" tabindex="{{ '0' if loop.first else '-1' }}" class="min-h-11 flex-1 rounded-full px-5 text-[15px] font-semibold text-ink-2 transition-colors duration-300 hover:text-ink motion-reduce:transition-none aria-selected:bg-moss aria-selected:text-white sm:flex-none{% if t.get('desktopOnly') %} hidden md:inline-flex md:items-center{% endif %}" data-tab="{{ t.id }}"{% if t.get('desktopOnly') %} data-desktop-only{% endif %}>{{ t.label }}</button>
+          {%- endfor %}
+        </div>
+      </div>
+
+      {%- for cat in price_panels %}
+      <div id="panel-{{ cat.id }}" role="tabpanel" aria-labelledby="tab-{{ cat.id }}" tabindex="0" class="mt-10 rounded-[20px] bg-surface p-5 sm:p-8 lg:p-12" data-panel="{{ cat.id }}">
+        <h3 class="mb-6 font-serif text-[30px] font-medium [.js_&]:sr-only">Прайс: {{ cat.label }}</h3>
+        <div class="lg:columns-2 lg:gap-16">
+          {%- for g in cat.groups %}
+          <div class="break-inside-avoid pb-10 last:pb-0 md:pb-12">
+            <h4 class="border-b border-ink/80 pb-3 font-serif text-[26px] font-medium leading-tight">{{ g.label }}</h4>
+            <ul>
+              {%- for s in g.rows %}
+              <li class="flex items-start justify-between gap-4 border-b border-line py-4 last:border-b-0">
+                <div class="min-w-0">
+                  <p class="text-[16px] font-medium leading-snug">{{ s.name }}</p>
+                  {%- if s.note %}<p class="mt-1 text-[14px] leading-snug text-ink-2">{{ s.note }}</p>{% endif %}
+                </div>
+                <p class="shrink-0 whitespace-nowrap pt-px text-right text-[17px] font-semibold leading-snug tnum">{{ s.price }}</p>
+              </li>
+              {%- endfor %}
+            </ul>
+          </div>
+          {%- endfor %}
+        </div>
+        {%- if cat.id == "master" and has_top_only %}
+        <p class="mt-2 border-t border-line pt-5 text-[15px] text-ink-2">Макияж и брови указаны в прайсе <span class="whitespace-nowrap">«Топ-мастер»</span>. <a href="#panel-top" class="link-u font-semibold text-moss" data-switch-tab="top">Посмотреть цены</a></p>
+        {%- endif %}
+      </div>
+      {%- endfor %}
+
+      <div id="panel-compare" role="tabpanel" aria-labelledby="tab-compare" tabindex="0" class="mt-10 rounded-[20px] bg-surface p-8 lg:p-12" data-panel="compare" hidden>
+        <table class="w-full border-collapse text-left">
+          <caption class="sr-only">Сравнение цен: мастер и топ-мастер</caption>
+          <thead>
+            <tr class="border-b border-ink/80">
+              <th scope="col" class="pb-3 pr-6 text-[13px] font-semibold uppercase tracking-[0.14em] text-ink-2">Услуга</th>
+              <th scope="col" class="w-[24%] pb-3 pr-6 text-right text-[13px] font-semibold uppercase tracking-[0.14em] text-ink-2">Мастер</th>
+              <th scope="col" class="w-[24%] pb-3 text-right text-[13px] font-semibold uppercase tracking-[0.14em] text-ink-2">Топ-мастер</th>
+            </tr>
+          </thead>
+          {%- for g in compare %}
+          <tbody>
+            <tr><th scope="rowgroup" colspan="3" class="pb-2 pt-8 font-serif text-[24px] font-medium">{{ g.label }}</th></tr>
+            {%- for s in g.rows %}
+            <tr class="border-b border-line">
+              <th scope="row" class="py-3.5 pr-6 align-top text-[16px] font-medium">{{ s.name }}{% if s.note %}<span class="mt-0.5 block text-[14px] font-normal text-ink-2">{{ s.note }}</span>{% endif %}</th>
+              {%- for p in s.prices %}
+              <td class="py-3.5 {{ 'pr-6' if loop.first else '' }} whitespace-nowrap text-right align-top text-[17px] tnum {{ 'font-semibold' if p.value else 'text-[15px] text-ink-2' }}">{% if p.value %}{{ p.value }}{% else %}<span title="В прайсе этой категории цена не указана">Уточнить</span>{% endif %}</td>
+              {%- endfor %}
+            </tr>
+            {%- endfor %}
+          </tbody>
+          {%- endfor %}
+        </table>
+      </div>
+
+      <div class="mt-8 flex flex-col gap-6 md:flex-row md:items-center md:justify-between" data-reveal>
+        <div class="text-[15px] leading-relaxed text-ink-2">
+          <p class="font-semibold text-ink">{{ prices.footnote }}</p>
+          <p>Дату и время записи согласуйте по телефону.</p>
+        </div>
+        {{ primary_cta("w-full md:w-auto") }}
+      </div>
+    </div>
+  </section>
+
+  {#- ── Д. Уход дома ────────────────────────────────── #}
+  <section id="care" class="scroll-mt-[88px] py-20 lg:py-32" aria-labelledby="care-title">
+    <div class="{{ C }} grid items-end gap-12 lg:grid-cols-12 lg:gap-8">
+      <div class="relative lg:col-span-6" data-reveal>
+        <div class="absolute -bottom-4 -right-3 left-10 top-10 sm:-bottom-5 sm:-right-5 rounded-[20px] bg-sage lg:-bottom-8 lg:-right-8" aria-hidden="true"></div>
+        <button type="button" class="group relative block w-full overflow-hidden rounded-[20px] bg-sage" data-lightbox aria-label="Открыть фото крупнее: {{ img.shelf.caption }}">
+          <img src="{{ img.shelf.src }}" width="{{ img.shelf.w }}" height="{{ img.shelf.h }}" alt="{{ img.shelf.alt }}" data-caption="{{ img.shelf.caption }}" loading="lazy" decoding="async" class="aspect-[4/5] w-full object-cover object-[50%_35%] transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        </button>
+      </div>
+      <div class="pt-4 lg:col-span-5 lg:col-start-8 lg:pb-10" data-reveal>
+        <p class="{{ LABEL }}">03 — Косметика {{ salon.brand.mark }}</p>
+        <h2 id="care-title" class="mt-5 font-serif text-[clamp(2.4rem,9vw,4rem)] font-medium leading-[1] tracking-[-0.015em]">Уход продолжается дома</h2>
+        <p class="mt-7 max-w-[40ch] text-[17px] leading-[1.7] text-ink-2">Познакомьтесь с ассортиментом косметики ESTEL в салоне. Наличие средств и стоимость можно уточнить по телефону.</p>
+        <a href="{{ tel }}" class="link-u mt-8 inline-flex min-h-11 items-center gap-2.5 text-[16px] font-semibold text-moss">{{ icon("phone") }}<span>Уточнить наличие: <span class="whitespace-nowrap">{{ salon.phone.display }}</span></span></a>
+      </div>
+    </div>
+  </section>
+
+  {#- ── Е. Отзыв ───────────────────────────────────── #}
+  <section id="review" class="on-dark relative scroll-mt-[88px] overflow-hidden bg-moss py-20 text-paper lg:py-28" aria-labelledby="review-title">
+    <svg class="pointer-events-none absolute -right-10 top-0 hidden h-full w-[420px] max-w-none opacity-[0.16] xl:block" viewBox="0 0 720 520" fill="none" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+      <g stroke="#F4F3EF" stroke-width="2" stroke-linecap="round">
+        <path d="M140 60 300 170"/><path d="M380 30 260 150"/><path d="M430 120 610 40"/><path d="M330 250 520 160"/><path d="M560 230 690 330"/><path d="M220 330 400 260"/>
+      </g>
+    </svg>
+    <div class="{{ C }} relative" data-reveal>
+      <h2 id="review-title" class="text-[13px] font-semibold uppercase tracking-[0.16em] text-sage">04 — Отзыв</h2>
+      <figure class="mt-8 max-w-[760px]">
+        <blockquote>
+          <p class="font-serif text-[clamp(2.1rem,8.5vw,3.75rem)] font-medium italic leading-[1.08] tracking-[-0.01em]">«…{{ review.quote }}»</p>
+        </blockquote>
+        <figcaption class="mt-10 flex flex-col gap-2 border-t border-paper/25 pt-6 sm:flex-row sm:items-center sm:gap-6">
+          <span class="text-[17px] font-semibold">{{ review.author }}</span>
+          <span class="flex items-center gap-3 text-[15px] text-paper/85">
+            <span class="tracking-[0.12em] text-paper" role="img" aria-label="Оценка этого отзыва: {{ review.rating }} из 5">{% for i in range(review.rating) %}★{% endfor %}</span>
+            <span>{{ review.date }}</span>
+          </span>
+          <span class="text-[15px] text-paper/85 sm:ml-auto">{{ review.label }}</span>
+        </figcaption>
+      </figure>
+      {%- if review_link %}
+      <a href="{{ review_link.url }}" target="_blank" rel="noopener" class="mt-10 inline-flex min-h-12 items-center gap-2.5 rounded-full border border-paper/40 px-6 py-3 text-[15px] font-semibold transition-[border-color,background-color] duration-300 hover:border-paper hover:bg-paper/10">{{ review_link.label }}{{ icon("out") }}<span class="sr-only">(откроется в новой вкладке)</span></a>
+      {%- endif %}
+    </div>
+  </section>
+
+  {#- ── Ж. Контакты ────────────────────────────────── #}
+  <section id="contacts" class="scroll-mt-[88px] py-20 lg:py-32" aria-labelledby="contacts-title">
+    <div class="{{ C }}">
+      <div data-reveal>
+        <p class="{{ LABEL }}">05 — Контакты</p>
+        <h2 id="contacts-title" class="mt-5 font-serif text-[clamp(2.4rem,9vw,4rem)] font-medium leading-[1] tracking-[-0.015em]">Будем рады знакомству</h2>
+      </div>
+      <div class="mt-12 grid gap-12 lg:grid-cols-12 lg:gap-8">
+        <dl class="grid gap-x-8 border-t border-ink/80 md:grid-cols-2 {{ 'lg:col-span-8' if demo.enabled else 'lg:col-span-12' }}" data-reveal>
+          <div class="border-b border-line py-6 md:col-span-2">
+            <dt class="flex items-center gap-2 {{ LABEL }}">{{ icon("pin", "size-4 text-moss") }}Адрес</dt>
+            <dd class="mt-3">
+              <address class="not-italic">
+                <span class="block font-serif text-[clamp(1.75rem,6.5vw,2.5rem)] font-medium leading-[1.1]">{{ salon.address.locality }}, {{ salon.address.street }}</span>
+                <span class="mt-2 block text-[16px] text-ink-2">{{ salon.address.region }}, {{ salon.address.postalCode }}</span>
+              </address>
+            </dd>
+          </div>
+          <div class="border-b border-line py-6">
+            <dt class="flex items-center gap-2 {{ LABEL }}">{{ icon("phone", "size-4 text-moss") }}Телефон</dt>
+            <dd class="mt-3"><a href="{{ tel }}" class="link-u font-serif text-[clamp(1.75rem,6.5vw,2.25rem)] font-medium leading-[1.1] tnum">{{ salon.phone.display }}</a></dd>
+          </div>
+          <div class="border-b border-line py-6">
+            <dt class="flex items-center gap-2 {{ LABEL }}">{{ icon("clock", "size-4 text-moss") }}Режим работы</dt>
+            <dd class="mt-3">
+              <span class="block font-serif text-[clamp(1.75rem,6.5vw,2.25rem)] font-medium leading-[1.1]">{{ salon.hours.display }}</span>
+              <span class="mt-2 block text-[15px] text-ink-2">{{ salon.hours.note }}</span>
+            </dd>
+          </div>
+          <div class="flex flex-col gap-3 pt-8 sm:flex-row md:col-span-2">
+            <a href="{{ tel }}" class="{{ BTN }}">{{ icon("phone") }}<span>Позвонить</span></a>
+            <a href="{{ map_url }}" target="_blank" rel="noopener" class="{{ BTN2 }}">{{ icon("pin") }}<span>Найти на карте</span><span class="sr-only">(Яндекс Карты, откроется в новой вкладке)</span></a>
+          </div>
+          <p class="pt-3 text-[14px] text-ink-2 md:col-span-2">Ссылка открывает поиск адреса в Яндекс Картах.</p>
+        </dl>
+        {%- if demo.enabled %}
+        <aside class="flex min-h-[220px] flex-col justify-end rounded-[20px] border border-dashed border-ink/30 p-6 lg:col-span-4" aria-label="Будущий блок" data-reveal>
+          <p class="{{ LABEL }}">Демо · ждёт материалов</p>
+          <p class="mt-3 text-[16px] leading-relaxed text-ink-2">Здесь появятся фото фасада и короткая подсказка, как найти вход, — после получения снимков от салона.</p>
+        </aside>
+        {%- endif %}
+      </div>
+    </div>
+  </section>
+</main>
+
+{#- ── З. Подвал ─────────────────────────────────────── #}
+<footer class="border-t border-line">
+  <div class="{{ C }} flex flex-col gap-8 py-12 md:flex-row md:items-end md:justify-between">
+    <div>
+      <p class="font-serif text-[26px] font-semibold leading-none">{{ salon.brand.primary }}</p>
+      <p class="mt-2 text-[15px] text-ink-2">{{ salon.fullName.value }}</p>
+      <p class="mt-1 text-[15px] text-ink-2">{{ salon.address.locality }}, {{ salon.address.region }}</p>
+    </div>
+    <div class="flex flex-col gap-1 text-[15px] md:items-end">
+      <a href="{{ tel }}" class="link-u self-start font-semibold md:self-end tnum">{{ salon.phone.display }}</a>
+      <span class="text-ink-2">{{ salon.hours.display }}</span>
+      {%- if demo.enabled %}<span class="mt-3 text-[14px] text-ink-2">Демо-версия · не для индексации</span>{% endif %}
+    </div>
+  </div>
+</footer>
+
+{#- Мобильная кнопка звонка #}
+<div class="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-paper/95 px-5 pb-[max(12px,env(safe-area-inset-bottom))] pt-3 backdrop-blur-md transition-transform duration-300 ease-out md:hidden" data-sticky-cta>
+  {{ primary_cta("w-full") }}
+</div>
+
+<dialog class="m-auto w-[min(94vw,1100px)] max-w-none bg-transparent p-0 text-paper backdrop:bg-[#151815]/85" aria-label="Фото салона" data-lightbox-dialog>
+  <figure class="relative">
+    <img alt="" class="mx-auto max-h-[80vh] w-auto rounded-[16px] object-contain" data-lightbox-img>
+    <figcaption class="mt-4 text-center text-[15px]" data-lightbox-caption></figcaption>
+    <button type="button" class="absolute right-3 top-3 inline-flex size-11 items-center justify-center rounded-full bg-paper text-ink shadow-md transition-transform hover:scale-105" data-lightbox-close aria-label="Закрыть фото">{{ icon("close", "size-5") }}</button>
+  </figure>
+</dialog>
+
+{%- if motion.gsap %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+{%- endif %}
+<script>{{ js|safe }}</script>
+</body>
+</html>

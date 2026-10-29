@@ -1,0 +1,303 @@
+{#- Шаблон страницы. Данные — content.json, сборка — build.py. Руками dist/index.html не правим. -#}
+{%- set C = "mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-10" -%}
+{%- set BTN = "inline-flex min-h-12 items-center justify-center gap-3 rounded-[12px] bg-olive px-6 py-3 text-[15px] font-semibold text-ivory transition-[background-color,transform,box-shadow] duration-300 ease-out hover:-translate-y-px hover:bg-olive-dark hover:shadow-[0_10px_24px_-14px_rgba(81,87,47,0.7)] active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0" -%}
+{%- set H2 = "font-serif text-[30px] font-medium leading-[1.1] tracking-[-0.01em] sm:text-[36px] lg:text-[42px]" -%}
+{%- set SECTION = "scroll-mt-20 py-12 sm:py-16 lg:py-[88px]" -%}
+{%- macro icon(name, cls="size-5") -%}
+<svg class="{{ cls }} shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+{%- if name == "phone" -%}<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>
+{%- elif name == "arrow" -%}<path d="M5 12h14M13 6l6 6-6 6"/>
+{%- elif name == "plus" -%}<path d="M12 5v14M5 12h14"/>
+{%- elif name == "pin" -%}<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
+{%- elif name == "clock" -%}<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+{%- elif name == "menu" -%}<path d="M4 8h16M4 16h16"/>
+{%- elif name == "close" -%}<path d="M6 6l12 12M18 6 6 18"/>
+{%- elif name == "scissors" -%}<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1 20 20M8.1 15.9 20 4M14.5 12.5 12 12"/>
+{%- elif name == "drop" -%}<path d="M12 2.7s6.5 7 6.5 11.8a6.5 6.5 0 0 1-13 0C5.5 9.7 12 2.7 12 2.7Z"/><path d="M9 15a3 3 0 0 0 3 3"/>
+{%- elif name == "bottle" -%}<path d="M10 2h4v3h-4zM9 5h6l1 4v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V9z"/><path d="M8 12h8"/>
+{%- elif name == "brush" -%}<path d="M18.4 2.6a2 2 0 0 1 2.9 2.9L11 15.8 8.2 13Z"/><path d="M7 14.5c-1.7 0-3 1.3-3 3 0 1.4-1 2.5-2 2.5 1 1 2.5 1.5 4 1.5a4 4 0 0 0 4-4c0-1.7-1.3-3-3-3Z"/>
+{%- elif name == "image" -%}<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5-5-9 9"/>
+{%- elif name == "sparkle" -%}<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8Z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8Z"/>
+{%- endif -%}</svg>
+{%- endmacro -%}
+<!doctype html>
+<html lang="{{ meta.lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ meta.title }}</title>
+<meta name="description" content="{{ meta.description }}">
+{%- if demo.noindex %}
+<meta name="robots" content="noindex, nofollow">{# демонстрация: выключить перед публичным запуском (content.json → demo.noindex) #}
+{%- endif %}
+<meta name="theme-color" content="#F7F3EC">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="{{ meta.title }}">
+<meta property="og:description" content="{{ meta.description }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600&display=swap">
+{%- if not inline_images %}
+<link rel="preload" as="image" href="{{ img.hero.src }}"{% if img.hero.srcset %} imagesrcset="{{ img.hero.srcset }}" imagesizes="(min-width: 1024px) 620px, 100vw"{% endif %} fetchpriority="high">
+{%- endif %}
+<script>document.documentElement.classList.add('js')</script>
+<style>{{ css|safe }}</style>
+<script type="application/ld+json">{{ jsonld|safe }}</script>
+</head>
+<body class="bg-cream font-sans text-[17px] leading-[1.6] text-ink antialiased">
+<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-[12px] focus:bg-ink focus:px-5 focus:py-3 focus:text-ivory">Перейти к содержанию</a>
+
+<header class="sticky top-0 z-40 border-b border-line/80 bg-cream/90 backdrop-blur-md">
+  <div class="{{ C }} flex h-16 items-center justify-between gap-4 lg:h-[76px]">
+    <a href="#top" class="flex min-w-0 flex-col leading-none" aria-label="{{ salon.fullName.value }} — в начало страницы">
+      <span class="font-serif text-[23px] font-semibold tracking-[-0.01em] lg:text-[25px]">{{ salon.brand.primary }}</span>
+      <span class="mt-1 whitespace-nowrap text-[13px] font-medium text-muted">Яна Белинская · {{ salon.brand.mark }}</span>
+    </a>
+    <nav class="hidden items-center gap-9 lg:flex" aria-label="Основная навигация">
+      {%- for item in nav %}
+      <a class="link-u py-2 text-[15px] font-medium" href="#{{ item.id }}">{{ item.label }}</a>
+      {%- endfor %}
+      <a href="#contacts" class="{{ BTN }} min-h-11 px-5 text-[14px]" data-book>{{ texts.hero.cta }}</a>
+    </nav>
+    <button type="button" class="-mr-2 inline-flex size-11 items-center justify-center rounded-[12px] transition-colors hover:bg-sand lg:hidden" aria-expanded="false" aria-controls="mobile-menu" data-menu-btn>
+      <span class="sr-only" data-menu-label>Открыть меню</span>
+      <span data-menu-icon-open>{{ icon("menu", "size-6") }}</span>
+      <span class="hidden" data-menu-icon-close>{{ icon("close", "size-6") }}</span>
+    </button>
+  </div>
+  <div id="mobile-menu" class="absolute inset-x-0 top-full hidden border-b border-line bg-cream shadow-[0_24px_40px_-30px_rgba(48,43,37,0.4)] lg:hidden" data-menu>
+    <nav class="{{ C }} pb-6 pt-1" aria-label="Меню">
+      <ul>
+        {%- for item in nav %}
+        <li class="border-b border-line"><a class="flex min-h-14 items-center justify-between font-serif text-[24px] font-medium" href="#{{ item.id }}" data-menu-link>{{ item.label }}{{ icon("arrow", "size-5 text-muted") }}</a></li>
+        {%- endfor %}
+      </ul>
+      <a href="{{ tel }}" class="{{ BTN }} mt-6 w-full">{{ icon("phone", "size-[18px]") }}<span>Позвонить</span></a>
+      <p class="mt-3 text-center text-[15px] text-muted">{{ salon.phone.display }} · {{ salon.hours.display }}</p>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  {#- ── Первый экран ── #}
+  <section id="top" class="scroll-mt-20 pt-3 sm:pt-5 lg:pt-6" aria-labelledby="hero-title">
+    <div class="{{ C }}">
+      <div class="relative grid overflow-hidden rounded-[24px] bg-sand bg-[radial-gradient(120%_90%_at_0%_0%,#F6EFE4_0%,#EEE5D9_55%,#E6DACB_100%)] lg:min-h-[600px] lg:grid-cols-[1fr_1.08fr] lg:rounded-[28px]">
+        <div class="relative z-10 self-center px-6 pb-8 pt-9 sm:px-10 sm:pt-12 lg:py-20 lg:pl-16 lg:pr-4">
+          <p class="text-[15px] font-medium text-muted">{{ texts.hero.eyebrow }}</p>
+          <h1 id="hero-title" class="mt-3 max-w-[13ch] font-serif text-[40px] font-medium leading-[1.04] tracking-[-0.015em] sm:text-[52px] lg:mt-5 lg:text-[66px]">{{ texts.hero.title }}</h1>
+          <p class="mt-4 max-w-[34ch] text-[17px] leading-[1.55] text-muted lg:mt-6 lg:text-[18px]">{{ texts.hero.text }}</p>
+          <div class="mt-7 flex flex-wrap items-center gap-x-7 gap-y-4 lg:mt-10">
+            <a href="#contacts" class="{{ BTN }}" data-book data-hero-cta><span>{{ texts.hero.cta }}</span>{{ icon("arrow", "size-[18px]") }}</a>
+            <a href="#prices" class="link-u inline-flex min-h-11 items-center text-[16px] font-semibold text-ink">{{ texts.hero.link }}</a>
+          </div>
+        </div>
+        <div class="relative h-[260px] sm:h-[380px] lg:h-auto">
+          <img src="{{ img.hero.src }}"{% if img.hero.srcset %} srcset="{{ img.hero.srcset }}" sizes="(min-width: 1024px) 620px, 100vw"{% endif %} width="{{ img.hero.w }}" height="{{ img.hero.h }}" alt="{{ img.hero.alt }}" fetchpriority="high" decoding="async" class="absolute inset-0 size-full object-cover object-[55%_62%] lg:object-[60%_50%]">
+          <div class="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#EEE5D9] to-transparent lg:inset-y-0 lg:left-0 lg:right-auto lg:h-full lg:w-40 lg:bg-gradient-to-r lg:from-[#EEE5D9]" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      {#- полоса фактов #}
+      <ul class="grid grid-cols-3 border-b border-line py-6 lg:py-8">
+        {%- for f in texts.facts %}
+        <li class="flex flex-col items-center gap-2.5 px-1 text-center text-[14px] font-medium leading-snug sm:text-[15px] lg:flex-row lg:justify-center lg:gap-4 lg:text-left {{ 'border-l border-line' if not loop.first else '' }}">
+          <span class="inline-flex size-10 items-center justify-center rounded-full bg-sand text-olive lg:size-11">{{ icon(f.icon, "size-[20px]") }}</span>
+          <span class="max-w-[13ch] lg:max-w-none">{{ f.text }}</span>
+        </li>
+        {%- endfor %}
+      </ul>
+    </div>
+  </section>
+
+  {#- ── Направления ── #}
+  <section id="directions" class="{{ SECTION }} pb-0 sm:pb-0 lg:pb-0" aria-labelledby="dir-title">
+    <div class="{{ C }}">
+      <h2 id="dir-title" class="{{ H2 }}" data-reveal>Направления</h2>
+      <ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:mt-10 lg:grid-cols-4 lg:gap-5">
+        {%- for d in texts.directions %}
+        <li data-reveal>
+          <a href="#group-{{ d.group }}" class="group flex h-full items-center gap-4 rounded-[18px] border border-line bg-ivory p-3 pr-4 transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-0.5 hover:border-olive/40 hover:shadow-[0_18px_40px_-28px_rgba(48,43,37,0.45)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 lg:min-h-[228px] lg:flex-col lg:items-start lg:gap-0 lg:rounded-[22px] lg:p-6" data-open-group="{{ d.group }}"{% if d.get('category') %} data-cat="{{ d.category }}"{% endif %}>
+            <span class="inline-flex size-14 shrink-0 items-center justify-center rounded-[14px] bg-sand text-olive lg:size-12 lg:rounded-full">{{ icon(d.icon, "size-6") }}</span>
+            <span class="min-w-0 flex-1 lg:mt-auto lg:pt-10">
+              <span class="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                <span class="font-serif text-[22px] font-semibold leading-tight lg:text-[25px]">{{ d.title }}</span>
+                {%- if d.get('tag') %}<span class="rounded-[8px] bg-sand px-2 py-0.5 text-[13px] font-semibold text-olive">{{ d.tag }}</span>{% endif %}
+              </span>
+              <span class="mt-1 block text-[14px] leading-snug text-muted lg:mt-2">{{ d.text }}</span>
+            </span>
+            <span class="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-muted transition-colors group-hover:text-olive lg:mt-5 lg:self-end lg:border lg:border-line">{{ icon("arrow", "size-[18px]") }}</span>
+          </a>
+        </li>
+        {%- endfor %}
+      </ul>
+    </div>
+  </section>
+
+  {#- ── О салоне ── #}
+  <section id="about" class="{{ SECTION }}" aria-labelledby="about-title">
+    <div class="{{ C }} grid items-center gap-7 lg:grid-cols-[1.05fr_1fr] lg:gap-20">
+      <div class="overflow-hidden rounded-[22px] bg-sand lg:rounded-[28px]" data-reveal>
+        <img src="{{ img.about.src }}" width="{{ img.about.w }}" height="{{ img.about.h }}" alt="{{ img.about.alt }}" loading="lazy" decoding="async" class="h-[270px] w-full object-cover object-[50%_45%] sm:h-[380px] lg:h-[520px]">
+      </div>
+      <div data-reveal>
+        <h2 id="about-title" class="{{ H2 }} max-w-[16ch]">{{ texts.about.title }}</h2>
+        <p class="mt-5 max-w-[42ch] text-[17px] leading-[1.6] text-muted lg:mt-6 lg:text-[18px]">{{ texts.about.text }}</p>
+        <p class="mt-6 flex items-start gap-3 border-t border-line pt-5 text-[16px] font-medium">{{ icon("pin", "mt-0.5 size-5 text-olive") }}<span>{{ salon.address.locality }}, {{ salon.address.street }}</span></p>
+      </div>
+    </div>
+  </section>
+
+  {#- ── Услуги и цены ── #}
+  <section id="prices" class="scroll-mt-20 bg-sand/60 py-12 sm:py-16 lg:py-[88px]" aria-labelledby="prices-title">
+    <div class="{{ C }} grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20">
+      <div class="lg:sticky lg:top-28 lg:self-start" data-reveal>
+        <h2 id="prices-title" class="{{ H2 }}">Услуги и цены</h2>
+        <p class="mt-3 text-[16px] text-muted" id="cat-hint">Выберите категорию специалиста</p>
+        <div class="mt-5 hidden rounded-[14px] bg-cream p-1 ring-1 ring-line [.js_&]:inline-flex" role="group" aria-labelledby="cat-hint" data-cat-switch>
+          {%- for cat in prices.categories %}
+          <button type="button" class="min-h-11 rounded-[10px] px-5 text-[15px] font-semibold text-muted transition-[background-color,color,box-shadow] duration-300 hover:text-ink aria-pressed:bg-ivory aria-pressed:text-ink aria-pressed:shadow-[0_2px_8px_-3px_rgba(48,43,37,0.25)] motion-reduce:transition-none" aria-pressed="{{ 'true' if loop.first else 'false' }}" data-set-cat="{{ cat.id }}">{{ cat.label }}</button>
+          {%- endfor %}
+        </div>
+        <p class="sr-only" aria-live="polite" data-cat-status></p>
+        <p class="mt-6 hidden text-[15px] leading-relaxed text-muted lg:block">{{ prices.footnote }}</p>
+      </div>
+
+      <div class="rounded-[22px] bg-ivory px-5 py-2 ring-1 ring-line/70 sm:px-8 lg:px-10 lg:py-4" data-view="master" data-price-list>
+        {%- for g in price_groups %}
+        <details id="group-{{ g.id }}" class="scroll-mt-24 border-b border-line last:border-b-0" data-group="{{ g.id }}"{% if loop.first %} open{% endif %}{% if g.only %} data-only="{{ g.only }}"{% endif %}>
+          <summary class="flex min-h-[68px] cursor-pointer items-center justify-between gap-4 py-3">
+            <span class="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span class="font-serif text-[23px] font-semibold leading-tight lg:text-[26px]">{{ g.label }}</span>
+              {%- if g.only == "top" %}<span class="rounded-[8px] bg-sand px-2 py-0.5 text-[13px] font-semibold text-olive">Топ-мастер</span>{% endif %}
+            </span>
+            <span class="acc-icon inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-line text-olive transition-transform duration-300">{{ icon("plus", "size-[18px]") }}</span>
+          </summary>
+          <ul class="pb-5">
+            {%- for s in g.rows %}
+            <li class="flex items-start justify-between gap-5 border-t border-line/70 py-3.5 first:border-t-0 first:pt-1">
+              <div class="min-w-0">
+                <p class="text-[16px] font-medium leading-snug">{{ s.name }}</p>
+                {%- if s.note %}<p class="mt-0.5 text-[14px] leading-snug text-muted">{{ s.note }}</p>{% endif %}
+              </div>
+              <div class="shrink-0 text-right">
+                {%- for cat in prices.categories %}
+                <p class="whitespace-nowrap text-[16px] font-semibold leading-snug tnum" data-p="{{ cat.id }}"><span class="nojs-only mr-2 text-[13px] font-medium text-muted">{{ cat.label }}</span>{% if s.prices[cat.id] %}{{ s.prices[cat.id] }}{% else %}<span class="text-[14px] font-medium text-muted">Уточнить</span>{% endif %}</p>
+                {%- endfor %}
+              </div>
+            </li>
+            {%- endfor %}
+          </ul>
+        </details>
+        {%- endfor %}
+        {%- if has_top_only %}
+        <p class="hidden border-t border-line py-2 text-[15px] text-muted [.js_&]:block" data-only="master">Макияж и брови — в прайсе топ-мастера. <button type="button" class="link-u inline-flex min-h-11 items-center font-semibold text-olive" data-set-cat="top" data-open="makeup">Показать</button></p>
+        {%- endif %}
+      </div>
+      <p class="-mt-2 text-[15px] text-muted lg:hidden">{{ prices.footnote }}</p>
+    </div>
+  </section>
+
+  {#- ── Наши работы ── #}
+  {%- if gallery.photos or gallery.showEmpty %}
+  <section id="works" class="{{ SECTION }} pb-0 sm:pb-0 lg:pb-0" aria-labelledby="works-title">
+    <div class="{{ C }}">
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between" data-reveal>
+        <h2 id="works-title" class="{{ H2 }}">{{ gallery.title }}</h2>
+        {%- if not gallery.photos %}<p class="text-[16px] text-muted">{{ gallery.emptyText }}</p>{% endif %}
+      </div>
+      <ul class="mt-6 grid grid-cols-2 gap-3 lg:mt-10 lg:grid-cols-4 lg:gap-5" data-reveal>
+        {%- if gallery.photos %}
+        {%- for g in gallery_imgs %}
+        <li>
+          <button type="button" class="group block w-full overflow-hidden rounded-[18px] bg-sand lg:rounded-[22px]" data-lightbox aria-label="Открыть фото крупнее: {{ g.alt }}">
+            <img src="{{ g.src }}" width="{{ g.w }}" height="{{ g.h }}" alt="{{ g.alt }}" loading="lazy" decoding="async" class="aspect-[4/5] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          </button>
+          {%- if g.caption %}<p class="mt-2 text-[14px] text-muted">{{ g.caption }}</p>{% endif %}
+        </li>
+        {%- endfor %}
+        {%- else %}
+        {%- for label in gallery.slots %}
+        <li aria-hidden="true">
+          <div class="flex aspect-[4/5] flex-col items-center justify-center gap-3 rounded-[18px] bg-[radial-gradient(120%_100%_at_30%_10%,#F4ECE1_0%,#EEE5D9_55%,#E7DCCD_100%)] text-muted/80 lg:rounded-[22px]">
+            {{ icon("image", "size-7 text-olive/60") }}
+            <span class="text-[14px] font-medium">{{ label }}</span>
+          </div>
+        </li>
+        {%- endfor %}
+        {%- endif %}
+      </ul>
+    </div>
+  </section>
+  {%- endif %}
+
+  {#- ── Косметика ESTEL ── #}
+  <section id="care" class="{{ SECTION }}" aria-labelledby="care-title">
+    <div class="{{ C }}">
+      <div class="grid overflow-hidden rounded-[22px] bg-ivory ring-1 ring-line/70 sm:grid-cols-[1fr_1.1fr] lg:grid-cols-[1fr_1.3fr] lg:rounded-[28px]" data-reveal>
+        <img src="{{ img.shelf.src }}" width="{{ img.shelf.w }}" height="{{ img.shelf.h }}" alt="{{ img.shelf.alt }}" loading="lazy" decoding="async" class="h-[230px] w-full object-cover object-[40%_30%] sm:h-full sm:min-h-[320px]">
+        <div class="flex flex-col justify-center p-6 sm:p-9 lg:px-16 lg:py-14">
+          <h2 id="care-title" class="{{ H2 }}">{{ texts.care.title }}</h2>
+          <p class="mt-4 max-w-[44ch] text-[17px] leading-[1.6] text-muted">{{ texts.care.text }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {#- ── Запись и контакты ── #}
+  <section id="contacts" class="scroll-mt-20 pb-12 sm:pb-16 lg:pb-[88px]" aria-labelledby="contacts-title">
+    <div class="{{ C }}">
+      <div class="grid gap-8 rounded-[24px] bg-sand bg-[radial-gradient(90%_120%_at_100%_100%,#E6DACB_0%,#EEE5D9_60%)] p-6 sm:p-10 lg:grid-cols-[1fr_1fr] lg:gap-16 lg:rounded-[28px] lg:p-14" data-reveal>
+        <div class="flex flex-col">
+          <h2 id="contacts-title" class="{{ H2 }}">{{ texts.contact.title }}</h2>
+          <p class="mt-4 max-w-[36ch] text-[17px] leading-[1.6] text-muted">{{ texts.contact.text }}</p>
+          <div class="mt-7 flex flex-wrap items-center gap-x-7 gap-y-4 lg:mt-9">
+            <a href="{{ tel }}" class="{{ BTN }}">{{ icon("phone", "size-[18px]") }}<span>Позвонить</span></a>
+            <a href="{{ map_url }}" target="_blank" rel="noopener" class="link-u inline-flex min-h-11 items-center gap-2 text-[16px] font-semibold">{{ icon("pin", "size-[18px] text-olive") }}Открыть на карте<span class="sr-only"> (Яндекс Карты, новая вкладка)</span></a>
+          </div>
+        </div>
+        <dl class="border-t border-ink/15">
+          <div class="border-b border-ink/15 py-5">
+            <dt class="text-[14px] font-medium text-muted">Телефон</dt>
+            <dd class="mt-1"><a href="{{ tel }}" class="link-u font-serif text-[32px] font-semibold leading-tight tnum lg:text-[38px]">{{ salon.phone.display }}</a></dd>
+          </div>
+          <div class="border-b border-ink/15 py-5">
+            <dt class="text-[14px] font-medium text-muted">Режим работы</dt>
+            <dd class="mt-1 text-[18px] font-semibold">{{ salon.hours.display }}</dd>
+          </div>
+          <div class="py-5">
+            <dt class="text-[14px] font-medium text-muted">Адрес</dt>
+            <dd class="mt-1"><address class="not-italic"><span class="block text-[18px] font-semibold">{{ salon.address.locality }}, {{ salon.address.street }}</span><span class="mt-0.5 block text-[15px] text-muted">{{ salon.address.region }}, {{ salon.address.postalCode }}</span></address></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="border-t border-line">
+  <div class="{{ C }} flex flex-col gap-5 py-8 text-[15px] sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <p class="font-serif text-[22px] font-semibold leading-none">{{ salon.brand.primary }}</p>
+      <p class="mt-1.5 text-[14px] text-muted">{{ salon.fullName.value }} · {{ salon.address.locality }}</p>
+    </div>
+    <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+      {%- for item in nav %}<a class="link-u text-muted hover:text-ink" href="#{{ item.id }}">{{ item.label }}</a>{% endfor %}
+      <a href="{{ tel }}" class="link-u font-semibold tnum">{{ salon.phone.display }}</a>
+    </div>
+  </div>
+</footer>
+
+{%- if gallery.photos %}
+<dialog class="m-auto w-[min(94vw,960px)] max-w-none bg-transparent p-0 backdrop:bg-[#1f1b17]/85" aria-label="Фото работы" data-lightbox-dialog>
+  <div class="relative">
+    <img alt="" class="mx-auto max-h-[84vh] w-auto rounded-[18px] object-contain" data-lightbox-img>
+    <button type="button" class="absolute right-3 top-3 inline-flex size-11 items-center justify-center rounded-full bg-ivory text-ink shadow-md" data-lightbox-close aria-label="Закрыть фото">{{ icon("close", "size-5") }}</button>
+  </div>
+</dialog>
+{%- endif %}
+<script>{{ js|safe }}</script>
+</body>
+</html>
